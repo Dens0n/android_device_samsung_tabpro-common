@@ -34,15 +34,13 @@ on early-init
     setprop sys.io.scheduler noop
 
 on init
-    export LD_SHIM_LIBS "/system/vendor/lib/libqc-opt.so|libshim_qcopt.so:/system/bin/rmt_storage|libshim_rmt_storage.so:/system/vendor/lib/libOpenCL.so|libboringssl-compat.so:/system/lib/libril.so|libshim_ril.so"
-
     # Set permissions for persist partition
     mkdir /persist 0771 system system
-
+    
     # Support legacy paths
-    symlink /sdcard /mnt/sdcard
-    symlink /sdcard /storage/sdcard0
-
+	symlink /sdcard /mnt/sdcard
+	symlink /sdcard /storage/sdcard0
+    
 on early-boot
     # set RLIMIT_MEMLOCK to 64MB
     setrlimit 8 67108864 67108864
@@ -362,6 +360,13 @@ service sensors /system/bin/sensors.qcom
     group root
     disabled
 
+on property:ro.use_data_netmgrd=true
+	start netmgrd
+
+on property:ro.use_data_netmgrd=false
+	#netmgr not supported on specific target
+	stop netmgrd
+
 # Adjust socket buffer to enlarge TCP receive window for high bandwidth
 # but only if ro.data.large_tcp_window_size property is set.
 on property:ro.data.large_tcp_window_size=true
@@ -586,7 +591,10 @@ on property:sys.boot_completed=1
     setprop sys.io.scheduler bfq
 
     # Configure the hardware properly
-    write /sys/module/lpm_levels/enable_low_power/l2 4
+    write /sys/module/lpm_resources/enable_low_power/l2 2
+    write /sys/module/lpm_resources/enable_low_power/pxo 1
+    write /sys/module/lpm_resources/enable_low_power/vdd_dig 1
+    write /sys/module/lpm_resources/enable_low_power/vdd_mem 1
     write /sys/module/msm_pm/modes/cpu0/power_collapse/suspend_enabled 1
     write /sys/module/msm_pm/modes/cpu1/power_collapse/suspend_enabled 1
     write /sys/module/msm_pm/modes/cpu2/power_collapse/suspend_enabled 1
@@ -648,6 +656,7 @@ on property:sys.boot_completed=1
     write /sys/devices/system/cpu/cpufreq/interactive/timer_rate 30000
     write /sys/devices/system/cpu/cpufreq/interactive/max_freq_hysteresis 100000
     write /sys/devices/system/cpu/cpufreq/interactive/timer_slack 30000
+    write /dev/cpuctl/apps/cpu.notify_on_migrate 1
 
     # CPU Boost driver
 
@@ -677,7 +686,7 @@ on property:sys.boot_completed=1
     chmod 664 /sys/devices/system/cpu/cpu1/online
     chmod 664 /sys/devices/system/cpu/cpu2/online
     chmod 664 /sys/devices/system/cpu/cpu3/online
-    write /dev/cpuctl/cpu.notify_on_migrate 1
+    write /dev/cpuctl/apps/cpu.notify_on_migrate 1
 
     # Configure the GPU
     write 320000000 /sys/devices/fdb00000.qcom,kgsl-3d0/kgsl/kgsl-3d0/devfreq/min_freq

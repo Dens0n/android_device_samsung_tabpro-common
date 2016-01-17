@@ -7,7 +7,9 @@ OUT_PROP=$3
 
 DEVICE=$4
 
-MAKEFILE=$OUT_ROOT/$DEVICE-vendor-blobs.mk
+#MAKEFILE=$OUT_ROOT/$DEVICE-vendor-blobs.mk
+MAKEFILE=$OUT_ROOT/mondrianlte-vendor-blobs.mk
+
 
 echo "Setup makefiles in $OUT_ROOT for $DEVICE"
 echo "Proprietary files in $OUT_PROP"
@@ -53,7 +55,7 @@ for FILE in `egrep -v '(^#|^$)' $1`; do
   fi
 done
 
-(cat << EOF) > $OUT_ROOT/$DEVICE-vendor.mk
+(cat << EOF) > $OUT_ROOT/mondrianlte-vendor.mk
 # Copyright (C) 2014 The CyanogenMod Project
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -79,8 +81,8 @@ if [ "$DEVICE" == tabpro-common ]; then
 
 PRODUCT_PACKAGES += \\
     libtime_genoff \\
-    com.qualcomm.location \\
-    libril
+    com.qualcomm.location# \\
+#libril
 EOF
 
   (cat << EOF) > $OUT_ROOT//Android.mk
@@ -115,14 +117,14 @@ LOCAL_MODULE_PATH := \$(TARGET_OUT_VENDOR_SHARED_LIBRARIES)
 include \$(BUILD_PREBUILT)
 
 include \$(CLEAR_VARS)
-LOCAL_MODULE := libril
-LOCAL_MODULE_OWNER := samsung
+#LOCAL_MODULE := libril
+#LOCAL_MODULE_OWNER := samsung
 LOCAL_SRC_FILES := proprietary/lib/libril.so
 LOCAL_MODULE_TAGS := optional
 LOCAL_MODULE_SUFFIX := .so
 LOCAL_MODULE_CLASS := SHARED_LIBRARIES
 LOCAL_MODULE_PATH := \$(TARGET_OUT_SHARED_LIBRARIES)
-LOCAL_OVERRIDES_PACKAGES := libril
+#LOCAL_OVERRIDES_PACKAGES := libril
 include \$(BUILD_PREBUILT)
 
 endif

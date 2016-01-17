@@ -17,7 +17,9 @@
 $(call inherit-product, $(SRC_TARGET_DIR)/product/languages_full.mk)
 
 # Get non-open-source specific aspects
-$(call inherit-product-if-exists, vendor/samsung/tabpro-common/tabpro-common-vendor.mk)
+#$(call inherit-product-if-exists, vendor/samsung/tabpro-common/tabpro-common-vendor.mk)
+$(call inherit-product-if-exists, vendor/samsung/mondrianwifi/mondrianwifi-vendor.mk)
+
 
 ## We are a tablet, not a phone
 PRODUCT_CHARACTERISTICS := tablet
@@ -47,7 +49,6 @@ PRODUCT_COPY_FILES += \
 # Camera
 PRODUCT_PACKAGES += \
     camera.msm8974 \
-    libshim_qcopt \
     libxml2
 
 # GPS
@@ -97,22 +98,6 @@ PRODUCT_PACKAGES += \
     init.qcom.usb.rc \
     init.target.rc \
     ueventd.qcom.rc
-
-# Ssl
-PRODUCT_PACKAGES += \
-    libboringssl-compat
-
-# Stlport
-PRODUCT_PACKAGES += \
-    libstlport
-
-# ril
-PRODUCT_PACKAGES += \
-    libshim_ril
-
-# rmt_storage
-PRODUCT_PACKAGES += \
-    libshim_rmt_storage
 
 # Thermal
 PRODUCT_COPY_FILES += \

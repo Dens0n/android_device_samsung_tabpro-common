@@ -36,7 +36,6 @@ BOARD_USES_SEPERATED_AUDIO_INPUT := true
 AUDIO_FEATURE_DISABLED_MULTI_VOICE_SESSIONS := true
 AUDIO_FEATURE_DISABLED_FM := true
 AUDIO_FEATURE_DISABLED_ANC_HEADSET := true
-USE_CUSTOM_AUDIO_POLICY := 1
 
 # Camera
 TARGET_PROVIDES_CAMERA_HAL := true
@@ -85,13 +84,32 @@ BOARD_USE_CUSTOM_RECOVERY_FONT := \"roboto_23x41.h\"
 BOARD_USES_MMCUTILS := true
 
 # RIL
-BOARD_RIL_CLASS := ../../../device/samsung/tabpro-common/ril
-BOARD_PROVIDES_LIBRIL := true
-BOARD_PROVIDES_RILD := true
+#BOARD_RIL_CLASS := ../../../device/samsung/tabpro-common/ril
+#BOARD_PROVIDES_LIBRIL := true
 
 # SELinux
 include device/qcom/sepolicy/sepolicy.mk
 BOARD_SEPOLICY_DIRS += device/samsung/tabpro-common/sepolicy
+
+#BOARD_SEPOLICY_UNION += \
+#  file_contexts \
+#  file.te \
+#  init.te \
+#  keystore.te \
+#  mediaserver.te \
+#  mm-pp-daemon.te \
+#  mm-qcamerad.te \
+#  mpdecision.te \
+#  rild.te \
+#  rmt_storage.te \
+#  system_app.te \
+#  system_server.te \
+#  tee.te \
+#  thermal-engine.te \
+#  time_daemon.te \
+#  ueventd.te \
+#  vold.te \
+#  wcnss-service.te \
 
 # Wifi
 BOARD_HAVE_SAMSUNG_WIFI := true
